@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PlantCard from "./PlantCard";
 
-function PlantList() {
+function PlantList({ filter, plants }) {
+  const [filteredPlants, setFilteredPlants] = useState(plants);
+
+  useEffect(() => {
+    if (filter === "") {
+      setFilteredPlants(plants);
+    } else {
+      setFilteredPlants(
+        plants.filter((plant) =>
+          plant.name.toLowerCase().includes(filter.toLowerCase()),
+        ),
+      );
+    }
+  }, [filter, plants]);
+
   return (
-    <ul className="cards">{/* render PlantCards components in here */}</ul>
+    <ul className="cards">
+      {filteredPlants.map((plant) => (
+        <PlantCard key={plant.id} plant={plant} />
+      ))}
+    </ul>
   );
 }
 
